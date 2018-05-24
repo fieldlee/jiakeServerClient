@@ -34,11 +34,14 @@ var channels = {};
 var caClients = {};
 const orgList = ["Nxia", "Nmen", "Dubai","Manager"];
 var aliasNames = {};
+var currentOrg = "Manager";
 
+if (process.env.ORG) {
+	currentOrg = process.env.ORG;
+}
 for (let key in ORGS) {
-	if (orgList.indexOf(key) >= 0) { //配置的组织是否包含其中
+	if (key == currentOrg) { //配置的组织是否包含其中
 		let client = new hfc();
-
 		let cryptoSuite = hfc.newCryptoSuite();
 		cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({ path: getKeyStoreForOrg(ORGS[key].name) }));
 		client.setCryptoSuite(cryptoSuite);

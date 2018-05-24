@@ -1,0 +1,13 @@
+{
+    "name" : "Retrospect",
+    "script" : "appClient.js",
+    "env_nxia" : {
+      "ORG": "Nxia"
+    },
+    "env_nmen" : {
+        "ORG": "Nmen"
+    },
+    "env_dubai" : {
+        "ORG": "Dubai"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "name" : "Retrospect",
+    "script" : "appManger.js",
+    "env_manager" : {
+      "ORG": "Manager"
+    }
+}
