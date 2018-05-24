@@ -123,10 +123,8 @@ app.post('/users', function (req, res) {
 
 	helper.getRegisteredUsers(username, orgName, true, password).then(function (response) {
 		if (response && typeof response !== 'string') {
-			res.json({
-				success: true,
-				info: token
-			});
+			response.token = token;
+			res.send(response);
 		} else {
 			res.json({
 				success: false,
