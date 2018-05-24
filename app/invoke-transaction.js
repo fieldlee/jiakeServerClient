@@ -30,6 +30,7 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 	var channel = helper.getChannelForOrg(org);
 	var targets = (peerNames) ? helper.newPeers(peerNames, org) : undefined;
 	var tx_id = null;
+	var returnJsonStr = null;
 //  username
 	return helper.getAdminUser(org).then((user) => {
 		tx_id = client.newTransactionID();
@@ -71,6 +72,7 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 				proposalResponses[0].response.status, proposalResponses[0].response.message,
 				proposalResponses[0].response.payload, proposalResponses[0].endorsement
 				.signature));
+			returnJsonStr = proposalResponses[0].response.payload;
 			var request = {
 				proposalResponses: proposalResponses,
 				proposal: proposal
@@ -142,6 +144,9 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 		if (response.status === 'SUCCESS') {
 			logger.info(response);
 			logger.info('Successfully sent transaction to the orderer.');
+			if (returnJsonStr !== null) {
+				return returnJsonStr;
+			}
 			return response;
 		} else {
 			logger.error('Failed to order the transaction. Error code: ' + response.status);
