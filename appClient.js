@@ -160,6 +160,7 @@ app.post('/channels/peers', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -206,6 +207,7 @@ app.post('/chaincodes', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -253,6 +255,7 @@ app.post('/channels/chaincodes/:chaincodeName', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -305,6 +308,7 @@ app.post('/query/channels/chaincodes/:chaincodeName', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -366,6 +370,7 @@ app.get('/channels/transactions/:trxnId', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -395,6 +400,7 @@ app.get('/channels/blocks', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -420,6 +426,7 @@ app.get('/channels/chaininfo', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -451,6 +458,7 @@ app.get('/chaincodes', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);
@@ -478,6 +486,7 @@ app.get('/channels', function (req, res) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
 			} else {
+				logger.info(message);
 				let jmsg = JSON.parse(message);
 				if (jmsg && typeof jmsg !== 'string') {
 					res.json(jmsg);

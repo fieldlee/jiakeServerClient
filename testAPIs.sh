@@ -145,7 +145,7 @@ echo
 echo "POST Install chaincode on Nmen"
 echo
 curl -s -X POST \
-  http://192.168.0.231:4000/chaincodes \
+  http://192.168.0.232:4000/chaincodes \
   -H "authorization: Bearer $Nmen_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -189,7 +189,7 @@ echo
 echo
 
 
-echo "POST instantiate chaincode on peer1 of Nxia"
+echo "POST instantiate chaincode on peer1 of Manager"
 echo
 curl -s -X POST \
   http://192.168.0.233:4000/channels/chaincodes \
@@ -206,8 +206,8 @@ echo
 echo "GET query Block by blockNumber"
 echo
 curl -s -X GET \
-  "http://192.168.0.231:4000/channels/blocks/1?peer=peer1" \
-  -H "authorization: Bearer $Nxia_TOKEN" \
+  "http://192.168.0.233:4000/channels/blocks/1?peer=peer1" \
+  -H "authorization: Bearer $M_TOKEN" \
   -H "content-type: application/json"
 echo
 echo
