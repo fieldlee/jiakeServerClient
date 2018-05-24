@@ -21,7 +21,7 @@ var Peer = require('fabric-client/lib/Peer.js');
 var EventHub = require('fabric-client/lib/EventHub.js');
 var tx_id = null;
 var nonce = null;
-var config = require('../config.json');
+var config = require('../config/config.json');
 var helper = require('./helper.js');
 var logger = helper.getLogger('Join-Channel');
 //helper.hfc.addConfigFile(path.join(__dirname, 'network-config.json'));
