@@ -44,7 +44,7 @@ for (let key in ORGS) {
 	if (currentOrg == "Manager") {
 		if (orgList.indexOf(key) >= 0) { //配置的组织是否包含其中
 			let client = new hfc();
-	
+			logger.error("======================================org key:"+key);
 			let cryptoSuite = hfc.newCryptoSuite();
 			cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({ path: getKeyStoreForOrg(ORGS[key].name) }));
 			client.setCryptoSuite(cryptoSuite);

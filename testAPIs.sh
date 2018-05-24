@@ -16,7 +16,7 @@ starttime=$(date +%s)
 echo "POST request Enroll on Nxia  ..."
 echo
 Nxia_TOKEN=$(curl -s -X POST \
-  http://192.168.0.231:4000/users \
+  http://192.168.0.233:4000/users \
   -H "content-type: application/x-www-form-urlencoded" \
   -d 'username=ningxia&password=password&orgName=Nxia')
 echo $Nxia_TOKEN
@@ -27,7 +27,7 @@ echo
 echo "POST request Enroll on Creator ..."
 echo
 Nmen_TOKEN=$(curl -s -X POST \
-  http://192.168.0.232:4000/users \
+  http://192.168.0.233:4000/users \
   -H "content-type: application/x-www-form-urlencoded" \
   -d 'username=creator&password=password&orgName=Nmen')
 echo $Nmen_TOKEN
@@ -38,7 +38,7 @@ echo
 echo "POST request Enroll on Transfer ..."
 echo
 Dubai_TOKEN=$(curl -s -X POST \
-  http://192.168.0.234:4000/users \
+  http://192.168.0.233:4000/users \
   -H "content-type: application/x-www-form-urlencoded" \
   -d 'username=transfer&password=password&orgName=Dubai')
 echo $Dubai_TOKEN
@@ -79,7 +79,7 @@ sleep 5
 echo "POST request Join channel on Nxia"
 echo
 curl -s -X POST \
-  http://192.168.0.231:4000/channels/peers \
+  http://192.168.0.233:4000/channels/peers \
   -H "authorization: Bearer $Nxia_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -91,7 +91,7 @@ echo
 echo "POST request Join channel on Nmen"
 echo
 curl -s -X POST \
-  http://192.168.0.232:4000/channels/peers \
+  http://192.168.0.233:4000/channels/peers \
   -H "authorization: Bearer $Nmen_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -104,7 +104,7 @@ echo
 echo "POST request Join channel on Dubai"
 echo
 curl -s -X POST \
-  http://192.168.0.234:4000/channels/peers \
+  http://192.168.0.233:4000/channels/peers \
   -H "authorization: Bearer $Dubai_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -129,7 +129,7 @@ echo
 echo "POST Install chaincode on Nxia"
 echo
 curl -s -X POST \
-  http://192.168.0.231:4000/chaincodes \
+  http://192.168.0.233:4000/chaincodes \
   -H "authorization: Bearer $Nxia_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -145,7 +145,7 @@ echo
 echo "POST Install chaincode on Nmen"
 echo
 curl -s -X POST \
-  http://192.168.0.232:4000/chaincodes \
+  http://192.168.0.233:4000/chaincodes \
   -H "authorization: Bearer $Nmen_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -160,7 +160,7 @@ echo
 echo "POST Install chaincode on Dubai"
 echo
 curl -s -X POST \
-  http://192.168.0.234:4000/chaincodes \
+  http://192.168.0.233:4000/chaincodes \
   -H "authorization: Bearer $Dubai_TOKEN" \
   -H "content-type: application/json" \
   -d '{
@@ -188,34 +188,7 @@ curl -s -X POST \
 echo
 echo
 
-echo "POST instantiate chaincode on peer1 of Nxia"
-echo
-curl -s -X POST \
-  http://192.168.0.231:4000/channels/chaincodes \
-  -H "authorization: Bearer $Nxia_TOKEN" \
-  -H "content-type: application/json" \
-  -d '{
-	"chaincodeName":"jiakechaincode",
-	"chaincodeVersion":"v1.0",
-	"args":[]
-}'
-echo
-echo
 
-
-echo "POST instantiate chaincode on peer1 of Nmen"
-echo
-curl -s -X POST \
-  http://192.168.0.232:4000/channels/chaincodes \
-  -H "authorization: Bearer $Nmen_TOKEN" \
-  -H "content-type: application/json" \
-  -d '{
-	"chaincodeName":"jiakechaincode",
-	"chaincodeVersion":"v1.0",
-	"args":[]
-}'
-echo
-echo
 
 echo "POST instantiate chaincode on peer1 of Manager"
 echo
@@ -231,19 +204,7 @@ curl -s -X POST \
 echo
 echo
 
-echo "POST instantiate chaincode on peer1 of Dubai"
-echo
-curl -s -X POST \
-  http://192.168.0.234:4000/channels/chaincodes \
-  -H "authorization: Bearer $Dubai_TOKEN" \
-  -H "content-type: application/json" \
-  -d '{
-	"chaincodeName":"jiakechaincode",
-	"chaincodeVersion":"v1.0",
-	"args":[]
-}'
-echo
-echo
+
 
 
 echo "GET query Block by blockNumber"
@@ -290,7 +251,7 @@ echo
 echo "GET query ChainInfo on Nmen peer1"
 echo
 curl -s -X GET \
-  "http://192.168.0.232:4000/channels?peer=peer1" \
+  "http://192.168.0.233:4000/channels?peer=peer1" \
   -H "authorization: Bearer $Nmen_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -299,7 +260,7 @@ echo
 echo "GET query Installed chaincodes"
 echo
 curl -s -X GET \
-  "http://192.168.0.231:4000/chaincodes?peer=peer1&type=installed" \
+  "http://192.168.0.233:4000/chaincodes?peer=peer1&type=installed" \
   -H "authorization: Bearer $Nxia_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -308,8 +269,8 @@ echo
 echo "GET query Instantiated chaincodes"
 echo
 curl -s -X GET \
-  "http://192.168.0.231:4000/chaincodes?peer=peer1&type=instantiated" \
-  -H "authorization: Bearer $Nxia_TOKEN" \
+  "http://192.168.0.233:4000/chaincodes?peer=peer1&type=instantiated" \
+  -H "authorization: Bearer $M_TOKEN" \
   -H "content-type: application/json"
 echo
 echo
@@ -317,11 +278,10 @@ echo
 echo "GET query Channels"
 echo
 curl -s -X GET \
-  "http://192.168.0.234:4000/channels?peer=peer1" \
+  "http://192.168.0.233:4000/channels?peer=peer1" \
   -H "authorization: Bearer $Dubai_TOKEN" \
   -H "content-type: application/json"
 echo
 echo
-
 
 echo "Total execution time : $(($(date +%s)-starttime)) secs ..."
