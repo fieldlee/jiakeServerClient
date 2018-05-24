@@ -11,6 +11,7 @@ networks:
 services:
   ca.nxia.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nxia.hlc.com-cert.pem
@@ -29,6 +30,7 @@ services:
 
   ca.nmen.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nmen.hlc.com-cert.pem
@@ -47,6 +49,7 @@ services:
 
   ca.dubai.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dubai.hlc.com-cert.pem
@@ -65,6 +68,7 @@ services:
 
   ca.manager.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manager.hlc.com-cert.pem
@@ -84,6 +88,7 @@ services:
   orderer.hlc.com:
     container_name: orderer.hlc.com
     image: hyperledger/fabric-orderer
+    privileged: true
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -115,6 +120,7 @@ services:
 
   peer0.nxia.hlc.com:
     container_name: peer0.nxia.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -145,6 +151,7 @@ services:
 
   peer1.nxia.hlc.com:
     container_name: peer1.nxia.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -171,6 +178,7 @@ services:
 
   peer0.nmen.hlc.com:
     container_name: peer0.nmen.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -202,6 +210,7 @@ services:
 
   peer1.nmen.hlc.com:
     container_name: peer1.nmen.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -228,6 +237,7 @@ services:
 
   peer0.dubai.hlc.com:
     container_name: peer0.dubai.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -259,6 +269,7 @@ services:
 
   peer1.dubai.hlc.com:
     container_name: peer1.dubai.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -285,6 +296,7 @@ services:
 
   peer0.manager.hlc.com:
     container_name: peer0.manager.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -316,6 +328,7 @@ services:
 
   peer1.manager.hlc.com:
     container_name: peer1.manager.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -343,6 +356,7 @@ services:
   couchdbNxia:
     container_name: couchdbNxia
     image: hyperledger/fabric-couchdb:latest
+    privileged: true
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
     environment:

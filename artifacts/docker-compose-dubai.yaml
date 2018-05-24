@@ -12,6 +12,7 @@ services:
 
   ca.dubai.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dubai.hlc.com-cert.pem
@@ -30,6 +31,7 @@ services:
 
   peer0.dubai.hlc.com:
     container_name: peer0.dubai.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -59,6 +61,7 @@ services:
 
   peer1.dubai.hlc.com:
     container_name: peer1.dubai.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -83,6 +86,7 @@ services:
   couchdbDubai:
     container_name: couchdbDubai
     image: hyperledger/fabric-couchdb:latest
+    privileged: true
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
     environment:

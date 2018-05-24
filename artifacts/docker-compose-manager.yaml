@@ -12,6 +12,7 @@ services:
 
   ca.manager.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manager.hlc.com-cert.pem
@@ -31,6 +32,7 @@ services:
   orderer1.hlc.com:
     container_name: orderer1.hlc.com
     image: hyperledger/fabric-orderer
+    privileged: true
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -68,6 +70,7 @@ services:
   orderer2.hlc.com:
     container_name: orderer2.hlc.com
     image: hyperledger/fabric-orderer
+    privileged: true
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -200,6 +203,7 @@ services:
 
   peer0.manager.hlc.com:
     container_name: peer0.manager.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -231,6 +235,7 @@ services:
 
   peer1.manager.hlc.com:
     container_name: peer1.manager.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -258,6 +263,7 @@ services:
   couchdbManager:
     container_name: couchdbManager
     image: hyperledger/fabric-couchdb:latest
+    privileged: true
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
     environment:

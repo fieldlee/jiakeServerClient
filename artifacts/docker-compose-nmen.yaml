@@ -12,6 +12,7 @@ services:
 
   ca.nmen.hlc.com:
     image: hyperledger/fabric-ca
+    privileged: true
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nmen.hlc.com-cert.pem
@@ -30,6 +31,7 @@ services:
 
   peer0.nmen.hlc.com:
     container_name: peer0.nmen.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
@@ -59,6 +61,7 @@ services:
 
   peer1.nmen.hlc.com:
     container_name: peer1.nmen.hlc.com
+    privileged: true
     extends:
       file:   base.yaml
       service: peer-base
