@@ -265,7 +265,7 @@ echo
 echo "GET query Instantiated chaincodes"
 echo
 curl -s -X GET \
-  "http://192.168.0.234:4000/chaincodes?peer=peer1&type=instantiated" \
+  "http://192.168.0.231:4000/chaincodes?peer=peer1&type=instantiated" \
   -H "authorization: Bearer $Nxia_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -274,7 +274,7 @@ echo
 echo "GET query Channels"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels?peer=peer1" \
+  "http://192.168.0.234:4000/channels?peer=peer1" \
   -H "authorization: Bearer $Dubai_TOKEN" \
   -H "content-type: application/json"
 echo
