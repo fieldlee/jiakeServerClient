@@ -38,8 +38,8 @@ var createChannel = function(channelName, channelConfigPath, username, orgName) 
 		// sign the channel config bytes as "endorsement", this is required by
 		// the orderer's channel creation policy
 		let signature = client.signChannelConfig(channelConfig);
-		logger.error("channel.getOrderers():");
-		logger.error(channel.getOrderers());
+		logger.debug("channel.getOrderers():");
+		logger.debug(channel.getOrderers());
 
 		let request = {
 			config: channelConfig,
@@ -48,7 +48,7 @@ var createChannel = function(channelName, channelConfigPath, username, orgName) 
 			orderer: channel.getOrderers()[0],
 			txId: client.newTransactionID()
 		};
-		logger.error("request:"+request);
+		logger.debug("request:"+request);
 		// send to orderer
 		return client.createChannel(request);
 	}, (err) => {
