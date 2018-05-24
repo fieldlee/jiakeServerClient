@@ -140,8 +140,9 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 			err;
 	}).then((response) => {
 		if (response.status === 'SUCCESS') {
+			logger.info(response);
 			logger.info('Successfully sent transaction to the orderer.');
-			return response.payload;
+			return response;
 		} else {
 			logger.error('Failed to order the transaction. Error code: ' + response.status);
 			return 'Failed to order the transaction. Error code: ' + response.status;
