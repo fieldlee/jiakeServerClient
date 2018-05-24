@@ -188,6 +188,34 @@ curl -s -X POST \
 echo
 echo
 
+echo "POST instantiate chaincode on peer1 of Nxia"
+echo
+curl -s -X POST \
+  http://192.168.0.231:4000/channels/chaincodes \
+  -H "authorization: Bearer $Nxia_TOKEN" \
+  -H "content-type: application/json" \
+  -d '{
+	"chaincodeName":"jiakechaincode",
+	"chaincodeVersion":"v1.0",
+	"args":[]
+}'
+echo
+echo
+
+
+echo "POST instantiate chaincode on peer1 of Nmen"
+echo
+curl -s -X POST \
+  http://192.168.0.232:4000/channels/chaincodes \
+  -H "authorization: Bearer $Nmen_TOKEN" \
+  -H "content-type: application/json" \
+  -d '{
+	"chaincodeName":"jiakechaincode",
+	"chaincodeVersion":"v1.0",
+	"args":[]
+}'
+echo
+echo
 
 echo "POST instantiate chaincode on peer1 of Manager"
 echo
@@ -202,6 +230,21 @@ curl -s -X POST \
 }'
 echo
 echo
+
+echo "POST instantiate chaincode on peer1 of Dubai"
+echo
+curl -s -X POST \
+  http://192.168.0.234:4000/channels/chaincodes \
+  -H "authorization: Bearer $Dubai_TOKEN" \
+  -H "content-type: application/json" \
+  -d '{
+	"chaincodeName":"jiakechaincode",
+	"chaincodeVersion":"v1.0",
+	"args":[]
+}'
+echo
+echo
+
 
 echo "GET query Block by blockNumber"
 echo
