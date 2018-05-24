@@ -39,24 +39,47 @@ var currentOrg = "Manager";
 if (process.env.ORG) {
 	currentOrg = process.env.ORG;
 }
+logger.error("======================================currentOrg:"+currentOrg);
 for (let key in ORGS) {
-	if (key == currentOrg) { //配置的组织是否包含其中
-		let client = new hfc();
-		let cryptoSuite = hfc.newCryptoSuite();
-		cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({ path: getKeyStoreForOrg(ORGS[key].name) }));
-		client.setCryptoSuite(cryptoSuite);
-
-		let channel = client.newChannel(hfc.getConfigSetting('channelName'));
-		channel.addOrderer(newOrderer1(client));
-		channel.addOrderer(newOrderer2(client));
-
-		clients[key] = client;
-		channels[key] = channel;
-		aliasNames[key] = ORGS[key]["aliasName"];
-		setupPeers(channel, key, client);
-
-		let caUrl = ORGS[key].ca;
-		caClients[key] = new copService(caUrl, null /*defautl TLS opts*/, '' /* default CA */, cryptoSuite);
+	if (currentOrg == "Manager") {
+		if (orgList.indexOf(key) >= 0) { //配置的组织是否包含其中
+			let client = new hfc();
+	
+			let cryptoSuite = hfc.newCryptoSuite();
+			cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({ path: getKeyStoreForOrg(ORGS[key].name) }));
+			client.setCryptoSuite(cryptoSuite);
+	
+			let channel = client.newChannel(hfc.getConfigSetting('channelName'));
+			channel.addOrderer(newOrderer1(client));
+			channel.addOrderer(newOrderer2(client));
+	
+			clients[key] = client;
+			channels[key] = channel;
+			aliasNames[key] = ORGS[key]["aliasName"];
+			setupPeers(channel, key, client);
+	
+			let caUrl = ORGS[key].ca;
+			caClients[key] = new copService(caUrl, null /*defautl TLS opts*/, '' /* default CA */, cryptoSuite);
+		}
+	}else{
+		if (key == currentOrg) { //配置的组织是否包含其中
+			let client = new hfc();
+			let cryptoSuite = hfc.newCryptoSuite();
+			cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({ path: getKeyStoreForOrg(ORGS[key].name) }));
+			client.setCryptoSuite(cryptoSuite);
+	
+			let channel = client.newChannel(hfc.getConfigSetting('channelName'));
+			channel.addOrderer(newOrderer1(client));
+			channel.addOrderer(newOrderer2(client));
+	
+			clients[key] = client;
+			channels[key] = channel;
+			aliasNames[key] = ORGS[key]["aliasName"];
+			setupPeers(channel, key, client);
+	
+			let caUrl = ORGS[key].ca;
+			caClients[key] = new copService(caUrl, null /*defautl TLS opts*/, '' /* default CA */, cryptoSuite);
+		}
 	}
 }
 
