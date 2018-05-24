@@ -133,7 +133,6 @@ app.post('/users', function (req, res) {
 		}
 	});
 });
-
 // Join Channel
 app.post('/channels/peers', function (req, res) {
 	logger.info('<<<<<<<<<<<<<<<<< J O I N  C H A N N E L >>>>>>>>>>>>>>>>>');
@@ -203,6 +202,54 @@ app.post('/chaincodes', function (req, res) {
 	}
 
 	install.installChaincode(peers, chaincodeName, chaincodePath, chaincodeVersion, req.username, req.orgname)
+		.then(function (message) {
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				logger.info(message);
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
+			}
+		});
+});
+// Instantiate chaincode on target peers
+app.post('/channels/chaincodes', function (req, res) {
+	logger.debug('==================== INSTANTIATE CHAINCODE ==================');
+	var chaincodeName = req.body.chaincodeName;
+	var chaincodeVersion = req.body.chaincodeVersion;
+	var channelName = hfc.getConfigSetting('channelName');
+	var fcn = req.body.fcn;
+	var args = req.body.args;
+	logger.debug('channelName  : ' + channelName);
+	logger.debug('chaincodeName : ' + chaincodeName);
+	logger.debug('chaincodeVersion  : ' + chaincodeVersion);
+	logger.debug('fcn  : ' + fcn);
+	logger.debug('args  : ' + args);
+	if (!chaincodeName) {
+		res.json(getErrorMessage('\'chaincodeName\''));
+		return;
+	}
+	if (!chaincodeVersion) {
+		res.json(getErrorMessage('\'chaincodeVersion\''));
+		return;
+	}
+	if (!channelName) {
+		res.json(getErrorMessage('\'channelName\''));
+		return;
+	}
+	if (!args) {
+		res.json(getErrorMessage('\'args\''));
+		return;
+	}
+	instantiate.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, req.username, req.orgname)
 		.then(function (message) {
 			if (message && typeof message !== 'string') {
 				res.json(message);
