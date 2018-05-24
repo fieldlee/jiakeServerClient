@@ -157,15 +157,19 @@ app.post('/channels/peers', function (req, res) {
 
 	join.joinChannel(channelName, peers, req.username, orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -199,15 +203,19 @@ app.post('/chaincodes', function (req, res) {
 
 	install.installChaincode(peers, chaincodeName, chaincodePath, chaincodeVersion, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -242,15 +250,19 @@ app.post('/channels/chaincodes/:chaincodeName', function (req, res) {
 
 	invoke.invokeChaincode(peers, channelName, chaincodeName, fcn, args, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -290,15 +302,19 @@ app.post('/query/channels/chaincodes/:chaincodeName', function (req, res) {
 
 	query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -317,15 +333,19 @@ app.get('/channels/blocks/:blockId', function (req, res) {
 
 	query.getBlockByNumber(peer, blockId, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -343,15 +363,19 @@ app.get('/channels/transactions/:trxnId', function (req, res) {
 	}
 	query.getTransactionByID(peer, trxnId, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -368,15 +392,19 @@ app.get('/channels/blocks', function (req, res) {
 
 	query.getBlockByHash(peer, hash, req.username, req.orgname).then(
 		function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -389,15 +417,19 @@ app.get('/channels/chaininfo', function (req, res) {
 
 	query.getChainInfo(peer, req.username, req.orgname).then(
 		function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -416,15 +448,19 @@ app.get('/chaincodes', function (req, res) {
 
 	query.getInstalledChaincodes(peer, installType, req.username, req.orgname)
 		.then(function (message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
@@ -438,17 +474,20 @@ app.get('/channels', function (req, res) {
 		return;
 	}
 	query.getChannels(peer, req.username, req.orgname)
-		.then(function (
-			message) {
-			let jmsg = JSON.parse(message);
-			if (jmsg && typeof jmsg !== 'string') {
-				res.json(jmsg);
-			}
-			else {
-				res.json({
-					success: false,
-					info: jmsg
-				});
+		.then(function (message) {
+			if (message && typeof message !== 'string') {
+				res.json(message);
+			} else {
+				let jmsg = JSON.parse(message);
+				if (jmsg && typeof jmsg !== 'string') {
+					res.json(jmsg);
+				}
+				else {
+					res.json({
+						success: false,
+						info: jmsg
+					});
+				}
 			}
 		});
 });
