@@ -32,7 +32,7 @@ function restartNetwork() {
 
         #teardown the network and clean the containers and intermediate images
 	cd artifacts
-	COMPOSE_PROJECT_NAME=jiake docker-compose-nmen down
+	COMPOSE_PROJECT_NAME=jiake docker-compose -f docker-compose-nmen.yaml down
 	dkcl
 	dkrm
 
