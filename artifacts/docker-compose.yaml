@@ -1,0 +1,393 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+networks:
+  default:
+
+services:
+  ca.nxia.hlc.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nxia.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/1b6f8149d30b4dc0aecd4a564ff83268ea893ad250a1031e662117407fa73e00_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nxia.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/1b6f8149d30b4dc0aecd4a564ff83268ea893ad250a1031e662117407fa73e00_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerNingXia
+    networks:
+      - default
+
+  ca.nmen.hlc.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nmen.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/095b464cb9592b8399465473406ce00e36e49a86e0de956e4603d8bd92d47b7b_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.nmen.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/095b464cb9592b8399465473406ce00e36e49a86e0de956e4603d8bd92d47b7b_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerNmeng
+    networks:
+      - default
+
+  ca.dubai.hlc.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dubai.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/952be9653bc2407e4f75d052607238c05bca05ce02942699ce9ec6c3a836cc3c_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dubai.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/952be9653bc2407e4f75d052607238c05bca05ce02942699ce9ec6c3a836cc3c_sk
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerDubai
+    networks:
+      - default
+
+  ca.manager.hlc.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manager.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/caf7630756e5d81a00ac08234d7686a6aa2e5039838fe7c01d44f333fc05bd58_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manager.hlc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/caf7630756e5d81a00ac08234d7686a6aa2e5039838fe7c01d44f333fc05bd58_sk
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerManager
+    networks:
+      - default
+
+  orderer.hlc.com:
+    container_name: orderer.hlc.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/crypto/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/crypto/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/crypto/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/crypto/orderer/tls/ca.crt]
+      # - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      # - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      # - ORDERER_KAFKA_VERBOSE=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
+    command: orderer
+    ports:
+      - 7050:7050
+    volumes:
+      - ./channel:/etc/hyperledger/configtx
+      - ./channel/crypto-config:/etc/hyperledger/fabric/crypto
+      - ./channel/crypto-config/ordererOrganizations/hlc.com/orderers/orderer1.hlc.com/:/etc/hyperledger/crypto/orderer
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/:/etc/hyperledger/crypto/peerNxia
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer0.nmen.hlc.com/:/etc/hyperledger/crypto/peerNmen
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/:/etc/hyperledger/crypto/peerDubai
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/:/etc/hyperledger/crypto/peerManager
+    networks:
+      - default
+
+  peer0.nxia.hlc.com:
+    container_name: peer0.nxia.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.nxia.hlc.com
+      - CORE_PEER_LOCALMSPID=NxiaMSP
+      - CORE_PEER_ADDRESS=peer0.nxia.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nxia.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.nxia.hlc.com:7051
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbNxia:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchadmin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    ports:
+      - 7051:7051
+      - 7053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls:/etc/hyperledger/fabric/tls
+        # - ./dataStorage/jiake/peer1/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      - couchdbNxia
+    networks:
+      - default
+
+  peer1.nxia.hlc.com:
+    container_name: peer1.nxia.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.nxia.hlc.com
+      - CORE_PEER_LOCALMSPID=NxiaMSP
+      - CORE_PEER_ADDRESS=peer1.nxia.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.nxia.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.nxia.hlc.com:7051
+    ports:
+      - 7056:7051
+      - 7058:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer1.nxia.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer1.nxia.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer1.nxia.hlc.com/tls:/etc/hyperledger/fabric/tls
+        # - ./dataStorage/jiake/peer2/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+    networks:
+      - default
+
+  peer0.nmen.hlc.com:
+    container_name: peer0.nmen.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.nmen.hlc.com
+      - CORE_PEER_LOCALMSPID=NmenMSP
+      - CORE_PEER_ADDRESS=peer0.nmen.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nmen.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.nmen.hlc.com:7051
+      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbCreator:5984
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchadmin
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    ports:
+      - 8051:7051
+      - 8053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer0.nmen.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer0.nmen.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer0.nmen.hlc.com/tls:/etc/hyperledger/fabric/tls
+       # - ./dataStorage/creator/peer1/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+      # - couchdbCreator
+    networks:
+      - default
+
+  peer1.nmen.hlc.com:
+    container_name: peer1.nmen.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.nmen.hlc.com
+      - CORE_PEER_LOCALMSPID=NmenMSP
+      - CORE_PEER_ADDRESS=peer1.nmen.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.nmen.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.nmen.hlc.com:7051
+    ports:
+      - 8056:7051
+      - 8058:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer1.nmen.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer1.nmen.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer1.nmen.hlc.com/tls:/etc/hyperledger/fabric/tls
+      # - ./dataStorage/creator/peer2/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+    networks:
+      - default
+
+  peer0.dubai.hlc.com:
+    container_name: peer0.dubai.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.dubai.hlc.com
+      - CORE_PEER_LOCALMSPID=DubaiMSP
+      - CORE_PEER_ADDRESS=peer0.dubai.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dubai.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dubai.hlc.com:7051
+      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbTransfer:5984
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchadmin
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/tls:/etc/hyperledger/fabric/tls
+      # - ./dataStorage/transfer/peer1/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+      # - couchdbTransfer
+    networks:
+      - default
+
+  peer1.dubai.hlc.com:
+    container_name: peer1.dubai.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.dubai.hlc.com
+      - CORE_PEER_LOCALMSPID=DubaiMSP
+      - CORE_PEER_ADDRESS=peer1.dubai.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.dubai.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.dubai.hlc.com:7051
+    ports:
+      - 9056:7051
+      - 9058:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/tls:/etc/hyperledger/fabric/tls
+        # - ./dataStorage/transfer/peer2/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+    networks:
+      - default
+
+  peer0.manager.hlc.com:
+    container_name: peer0.manager.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.manager.hlc.com
+      - CORE_PEER_LOCALMSPID=ManagerMSP
+      - CORE_PEER_ADDRESS=peer0.manager.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manager.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.manager.hlc.com:7051
+      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbTransfer:5984
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchadmin
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    ports:
+      - 10051:7051
+      - 10053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/tls:/etc/hyperledger/fabric/tls
+      # - ./dataStorage/transfer/peer1/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+      # - couchdbTransfer
+    networks:
+      - default
+
+  peer1.manager.hlc.com:
+    container_name: peer1.manager.hlc.com
+    extends:
+      file:   base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.manager.hlc.com
+      - CORE_PEER_LOCALMSPID=ManagerMSP
+      - CORE_PEER_ADDRESS=peer1.manager.hlc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.manager.hlc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.manager.hlc.com:7051
+    ports:
+      - 10056:7051
+      - 10058:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer1.manager.hlc.com/:/etc/hyperledger/crypto/peer
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer1.manager.hlc.com/msp:/etc/hyperledger/fabric/msp
+      - ./channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer1.manager.hlc.com/tls:/etc/hyperledger/fabric/tls
+        # - ./dataStorage/transfer/peer2/:/var/hyperledger/production/
+    depends_on:
+      - orderer.hlc.com
+      # - orderer2.hlc.com
+    networks:
+      - default
+
+  couchdbNxia:
+    container_name: couchdbNxia
+    image: hyperledger/fabric-couchdb:latest
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=couchadmin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "5984:5984"
+    networks:
+      - default
+
+  # cli:
+  #     container_name: cli
+  #     image: hyperledger/fabric-tools
+  #     tty: true
+  #     environment:
+  #       - GOPATH=/opt/gopath
+  #       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+  #       - CORE_LOGGING_LEVEL=DEBUG
+  #       - CORE_PEER_ID=cli
+  #       - CORE_PEER_ADDRESS=peer0.nxia.hlc.com:7051
+  #       - CORE_PEER_LOCALMSPID=NxiaMSP
+  #       - CORE_PEER_TLS_ENABLED=true
+  #       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/server.crt
+  #       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/server.key
+  #       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/ca.crt
+  #       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/users/Admin@nxia.hlc.com/msp
+  #     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+  #     # command: /bin/bash -c './scripts/script.sh jiakechannel ${DELAY}; sleep 60'
+  #     volumes:
+  #         - /var/run/:/host/var/run/
+  #         # - ./channel/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+  #         # - ./channel:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+  #         # - ./cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/
+  #     depends_on:
+  #       - orderer1.hlc.com
+  #       - orderer2.hlc.com
+  #       - peer0.nxia.hlc.com
+  #       - peer1.nxia.hlc.com
+  #       - peer0.nmen.hlc.com
+  #       - peer1.nmen.hlc.com
+  #       - peer0.dubai.hlc.com
+  #       - peer1.dubai.hlc.com
+  #       - peer0.manager.hlc.com
+  #       - peer1.manager.hlc.com
+  #     networks:
+  #       - default      

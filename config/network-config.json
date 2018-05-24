@@ -1,0 +1,110 @@
+{
+	"network-config": {
+		"orderer1": {
+			"url": "grpcs://192.168.0.233:7050",
+			"server-hostname": "orderer1.hlc.com",
+			"tls_cacerts": "../artifacts/channel/crypto-config/ordererOrganizations/hlc.com/orderers/orderer1.hlc.com/tls/ca.crt"
+		},
+		"orderer2": {
+			"url": "grpcs://192.168.0.233:8050",
+			"server-hostname": "orderer2.hlc.com",
+			"tls_cacerts": "../artifacts/channel/crypto-config/ordererOrganizations/hlc.com/orderers/orderer2.hlc.com/tls/ca.crt"
+		},
+		"Nxia": {
+			"aliasName":"org1",
+			"name": "peerNxia",
+			"mspid": "NxiaMSP",
+			"ca": "https://192.168.0.231:7054",
+			"peers": {
+				"peer1": {
+					"requests": "grpcs://192.168.0.231:7051",
+					"events": "grpcs://192.168.0.231:7053",
+					"server-hostname": "peer0.nxia.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/ca.crt"
+				},
+				"peer2": {
+					"requests": "grpcs://192.168.0.231:7056",
+					"events": "grpcs://192.168.0.231:7058",
+					"server-hostname": "peer1.nxia.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/nxia.hlc.com/peers/peer1.nxia.hlc.com/tls/ca.crt"
+				}	
+			},
+			"admin": {
+				"key": "../artifacts/channel/crypto-config/peerOrganizations/nxia.hlc.com/users/Admin@nxia.hlc.com/msp/keystore",
+				"cert": "../artifacts/channel/crypto-config/peerOrganizations/nxia.hlc.com/users/Admin@nxia.hlc.com/msp/signcerts"
+			}
+		},
+		"Nmen": {
+			"aliasName":"org1",
+			"name": "peerNmen",
+			"mspid": "NmenMSP",
+			"ca": "https://192.168.0.232:7054",
+			"peers": {
+				"peer1": {
+					"requests": "grpcs://192.168.0.232:7051",
+					"events": "grpcs://192.168.0.232:7053",
+					"server-hostname": "peer0.nmen.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer0.nmen.hlc.com/tls/ca.crt"
+				},
+				"peer2": {
+					"requests": "grpcs://192.168.0.232:7056",
+					"events": "grpcs://192.168.0.232:7058",
+					"server-hostname": "peer1.nmen.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/nmen.hlc.com/peers/peer1.nmen.hlc.com/tls/ca.crt"
+				}	
+			},
+			"admin": {
+				"key": "../artifacts/channel/crypto-config/peerOrganizations/nmen.hlc.com/users/Admin@nmen.hlc.com/msp/keystore",
+				"cert": "../artifacts/channel/crypto-config/peerOrganizations/nmen.hlc.com/users/Admin@nmen.hlc.com/msp/signcerts"
+			}
+		},
+		"Dubai": {
+			"aliasName":"org1",
+			"name": "peerDubai",
+			"mspid": "DubaiMSP",
+			"ca": "https://192.168.0.234:7054",
+			"peers": {
+				"peer1": {
+					"requests": "grpcs://192.168.0.234:7051",
+					"events": "grpcs://192.168.0.234:7053",
+					"server-hostname": "peer0.dubai.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/tls/ca.crt"
+				},
+				"peer2": {
+					"requests": "grpcs://192.168.0.234:7056",
+					"events": "grpcs://192.168.0.234:7058",
+					"server-hostname": "peer1.dubai.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/tls/ca.crt"
+				}	
+			},
+			"admin": {
+				"key": "../artifacts/channel/crypto-config/peerOrganizations/dubai.hlc.com/users/Admin@dubai.hlc.com/msp/keystore",
+				"cert": "../artifacts/channel/crypto-config/peerOrganizations/dubai.hlc.com/users/Admin@dubai.hlc.com/msp/signcerts"
+			}
+		},
+		"Manager": {
+			"aliasName":"org1",
+			"name": "peerManager",
+			"mspid": "ManagerMSP",
+			"ca": "https://192.168.0.233:7054",
+			"peers": {
+				"peer1": {
+					"requests": "grpcs://192.168.0.233:7051",
+					"events": "grpcs://192.168.0.233:7053",
+					"server-hostname": "peer0.manager.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/tls/ca.crt"
+				},
+				"peer2": {
+					"requests": "grpcs://192.168.0.233:7056",
+					"events": "grpcs://192.168.0.233:7058",
+					"server-hostname": "peer1.manager.hlc.com",
+					"tls_cacerts": "../artifacts/channel/crypto-config/peerOrganizations/manager.hlc.com/peers/peer1.manager.hlc.com/tls/ca.crt"
+				}	
+			},
+			"admin": {
+				"key": "../artifacts/channel/crypto-config/peerOrganizations/manager.hlc.com/users/Admin@manager.hlc.com/msp/keystore",
+				"cert": "../artifacts/channel/crypto-config/peerOrganizations/manager.hlc.com/users/Admin@manager.hlc.com/msp/signcerts"
+			}
+		}
+	}
+}

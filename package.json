@@ -1,0 +1,36 @@
+{
+  "name": "restrospect",
+  "version": "1.0.1",
+  "description": "node.js programe",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "log4js": "*",
+    "cookie-parser": "*",
+    "cors": "^2.8.3",
+    "async": "^2.1.2",
+    "body-parser": "^1.15.0",
+    "config": "^1.21.0",
+    "express": "^4.13.4",
+    "express-bearer-token": "^2.1.0",
+    "express-jwt": "^5.1.0",
+    "express-session": "^1.13.0",
+    "express-validator": "^2.20.5",
+    "jsonwebtoken": "^7.3.0",
+    "method-override": "^2.3.5",
+    "fabric-ca-client": "^1.1.0",
+    "fabric-client": "^1.1.0",
+    "mongodb": "^2.2.22",
+    "mongoose": "4.9.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "sinon": "^1.17.4",
+    "sinon-mongoose": "^1.2.1",
+    "stats-lite": "^2.0.3",
+    "supertest": "^1.2.0"
+  }
+}
