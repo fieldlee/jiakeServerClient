@@ -2,7 +2,7 @@
     "name" : "Retrospect",
     "script" : "appManger.js",
     "env_manager" : {
-      "ORG": "Manager"
-
+      "ORG": "Manager",
+      "TARGET_NETWORK":"local"
     }
 }

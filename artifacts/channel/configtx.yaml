@@ -72,7 +72,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.nxia.hlc.com
+            - Host: 192.168.0.231
               Port: 7051
 
     - &Nmen
@@ -89,7 +89,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.nmen.hlc.com
+            - Host: 192.168.0.232
               Port: 7051
     - &Dubai
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -105,7 +105,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.dubai.hlc.com
+            - Host: 192.168.0.234
               Port: 7051
     - &Manager
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -121,7 +121,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.manager.hlc.com
+            - Host: 192.168.0.233
               Port: 7051
 ################################################################################
 #
@@ -138,8 +138,8 @@ Orderer: &OrdererDefaults
     OrdererType: kafka
 
     Addresses:
-        - orderer1.hlc.com:7050
-        - orderer2.hlc.com:7050
+        - 192.168.0.233:7050
+        - 192.168.0.233:8050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 4s
