@@ -14,7 +14,7 @@ KAFKA=x86_64-0.4.7
 COUCHDB=x86_64-0.4.6
 ZOOKEEPER=x86_64-0.4.7
 # set of Hyperledger Fabric images
-FABRIC_IMAGES=(fabric-peer fabric-ca fabric-ccenv fabric-javaenv  fabric-tools)
+FABRIC_IMAGES=(fabric-peer fabric-ca fabric-ccenv fabric-javaenv)
 
 for image in ${FABRIC_IMAGES[@]}; do
   echo "Pulling ${DOCKER_NS}/$image:${ARCH}-${VERSION}"
