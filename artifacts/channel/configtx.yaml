@@ -138,8 +138,8 @@ Orderer: &OrdererDefaults
     OrdererType: kafka
 
     Addresses:
-        - orderer1.hlc.com:7050
-        - orderer2.hlc.com:8050
+        - 192.168.0.233:7050
+        - 192.168.0.233:8050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 4s
