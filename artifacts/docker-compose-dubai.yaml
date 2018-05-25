@@ -54,6 +54,9 @@ services:
       - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/msp:/etc/hyperledger/fabric/msp
       - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer0.dubai.hlc.com/tls:/etc/hyperledger/fabric/tls
       # - ./dataStorage/transfer/peer1/:/var/hyperledger/production/
+    extra_hosts:
+      - "orderer1.hlc.com:192.168.0.233"
+      - "orderer2.hlc.com:192.168.0.233"
     depends_on:
       - couchdbDubai
     networks:
@@ -80,6 +83,9 @@ services:
       - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/msp:/etc/hyperledger/fabric/msp
       - ./channel/crypto-config/peerOrganizations/dubai.hlc.com/peers/peer1.dubai.hlc.com/tls:/etc/hyperledger/fabric/tls
         # - ./dataStorage/transfer/peer2/:/var/hyperledger/production/
+    extra_hosts:
+      - "orderer1.hlc.com:192.168.0.233"
+      - "orderer2.hlc.com:192.168.0.233"
     networks:
       - default
 
