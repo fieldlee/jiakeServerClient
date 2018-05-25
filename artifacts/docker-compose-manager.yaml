@@ -276,39 +276,33 @@ services:
     networks:
       - default
 
-  # cli:
-  #     container_name: cli
-  #     image: hyperledger/fabric-tools
-  #     tty: true
-  #     environment:
-  #       - GOPATH=/opt/gopath
-  #       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #       - CORE_LOGGING_LEVEL=DEBUG
-  #       - CORE_PEER_ID=cli
-  #       - CORE_PEER_ADDRESS=peer0.nxia.hlc.com:7051
-  #       - CORE_PEER_LOCALMSPID=NxiaMSP
-  #       - CORE_PEER_TLS_ENABLED=true
-  #       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/server.crt
-  #       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/server.key
-  #       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/peers/peer0.nxia.hlc.com/tls/ca.crt
-  #       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nxia.hlc.com/users/Admin@nxia.hlc.com/msp
-  #     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-  #     # command: /bin/bash -c './scripts/script.sh jiakechannel ${DELAY}; sleep 60'
-  #     volumes:
-  #         - /var/run/:/host/var/run/
-  #         # - ./channel/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-  #         # - ./channel:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-  #         # - ./cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/
-  #     depends_on:
-  #       - orderer1.hlc.com
-  #       - orderer2.hlc.com
-  #       - peer0.nxia.hlc.com
-  #       - peer1.nxia.hlc.com
-  #       - peer0.nmen.hlc.com
-  #       - peer1.nmen.hlc.com
-  #       - peer0.dubai.hlc.com
-  #       - peer1.dubai.hlc.com
-  #       - peer0.manager.hlc.com
-  #       - peer1.manager.hlc.com
-  #     networks:
-  #       - default      
+  cli:
+      container_name: cli
+      image: hyperledger/fabric-tools
+      tty: true
+      environment:
+        - GOPATH=/opt/gopath
+        - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+        - CORE_LOGGING_LEVEL=DEBUG
+        - CORE_PEER_ID=cli
+        - CORE_PEER_ADDRESS=peer0.manager.hlc.com:7051
+        - CORE_PEER_LOCALMSPID=ManagerMSP
+        - CORE_PEER_TLS_ENABLED=true
+        - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/tls/server.crt
+        - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/tls/server.key
+        - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manager.hlc.com/peers/peer0.manager.hlc.com/tls/ca.crt
+        - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manager.hlc.com/users/Admin@manager.hlc.com/msp
+      working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+      # command: /bin/bash -c './scripts/script.sh jiakechannel ${DELAY}; sleep 60'
+      volumes:
+          - /var/run/:/host/var/run/
+          - ./channel/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+          - ./channel:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+          - ./cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/
+      depends_on:
+        - orderer1.hlc.com
+        - orderer2.hlc.com
+        - peer0.manager.hlc.com
+        - peer1.manager.hlc.com
+      networks:
+        - default      
