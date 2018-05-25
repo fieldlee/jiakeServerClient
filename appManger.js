@@ -26,6 +26,7 @@ if (env) {
 } else {
 	file = util.format(file, '');
 }
+
 hfc.addConfigFile(path.join(__dirname, 'config', file));
 hfc.addConfigFile(path.join(__dirname, 'config', 'config.json'));
 
@@ -85,6 +86,7 @@ app.use(function (req, res, next) {
 //////////////////////////////// START SERVER /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 var server = http.createServer(app).listen(port, function () { });
+logger.info('************** ' + file + '  ******************');
 logger.info('****************** SERVER STARTED ************************');
 logger.info('**************  http://' + host + ':' + port + '  ******************');
 server.timeout = 240000;

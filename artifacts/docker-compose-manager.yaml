@@ -88,7 +88,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
     command: orderer
     ports:
-      - 8050:8050
+      - 8050:7050
     volumes:
       - ./channel:/etc/hyperledger/configtx
       - ./channel/crypto-config:/etc/hyperledger/fabric/crypto
@@ -125,9 +125,9 @@ services:
     environment:
       - ZOO_MY_ID=2
     ports:
-      - 12181:2181
-      - 12888:2888
-      - 13888:3888
+      - 2191:2181
+      - 2898:2888
+      - 3898:3888
 
   zookeeper2.hlc.com:
     container_name: zookeeper2.hlc.com
@@ -137,9 +137,9 @@ services:
     environment:
       - ZOO_MY_ID=3
     ports:
-      - 22181:2181
-      - 22888:2888
-      - 23888:3888
+      - 2281:2181
+      - 2988:2888
+      - 3988:3888
 
   kafka0.hlc.com:
     container_name: kafka0.hlc.com
@@ -168,8 +168,8 @@ services:
       - zookeeper1.hlc.com
       - zookeeper2.hlc.com
     ports:
-      - 10092:9092
-      - 10093:9093
+      - 9192:9092
+      - 9193:9093
 
   kafka2.hlc.com:
     container_name: kafka2.hlc.com
@@ -183,8 +183,8 @@ services:
       - zookeeper1.hlc.com
       - zookeeper2.hlc.com
     ports:
-      - 11092:9092
-      - 11093:9093
+      - 9292:9092
+      - 9293:9093
 
   kafka3.hlc.com:
     container_name: kafka3.hlc.com
@@ -198,8 +198,8 @@ services:
       - zookeeper1.hlc.com
       - zookeeper2.hlc.com
     ports:
-      - 12092:9092
-      - 12093:9093
+      - 9392:9092
+      - 9393:9093
 
   peer0.manager.hlc.com:
     container_name: peer0.manager.hlc.com

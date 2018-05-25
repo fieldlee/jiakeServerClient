@@ -67,12 +67,17 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 			all_good = all_good & one_good;
 		}
 		if (all_good) {
-			logger.debug(util.format(
-				'Successfully sent Proposal and received ProposalResponse: Status - %s, message - "%s", metadata - "%s", endorsement signature: %s',
-				proposalResponses[0].response.status, proposalResponses[0].response.message,
-				proposalResponses[0].response.payload, proposalResponses[0].endorsement
-				.signature));
-			returnJsonStr = proposalResponses[0].response.payload;
+			// logger.debug(util.format(
+			// 	'Successfully sent Proposal and received ProposalResponse: Status - %s, message - "%s", metadata - "%s", endorsement signature: %s',
+			// 	proposalResponses[0].response.status, proposalResponses[0].response.message,
+			// 	proposalResponses[0].response.payload, proposalResponses[0].endorsement
+			// 	.signature));
+
+				if (returnJsonStr == null) {
+					returnJsonStr = util.format("%s",proposalResponses[0].response.payload);
+					// logger.debug("returnJsonStr:"+returnJsonStr);
+				}
+			
 			var request = {
 				proposalResponses: proposalResponses,
 				proposal: proposal
@@ -144,6 +149,7 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 		if (response.status === 'SUCCESS') {
 			logger.info(response);
 			logger.info('Successfully sent transaction to the orderer.');
+			// logger.info(returnJsonStr);
 			if (returnJsonStr !== null) {
 				return returnJsonStr;
 			}
