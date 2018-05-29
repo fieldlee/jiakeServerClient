@@ -91,7 +91,7 @@ services:
 
   couchdbDubai:
     container_name: couchdbDubai
-    image: hyperledger/fabric-couchdb:latest
+    image: hyperledger/fabric-couchdb
     privileged: true
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
