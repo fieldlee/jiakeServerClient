@@ -107,11 +107,11 @@ services:
 
   zookeeper0.hlc.com:
     container_name: zookeeper0.hlc.com
-    extends:
-      file: base/kafka-base.yaml
-      service: zookeeper
+    image: hyperledger/fabric-zookeeper
+    restart: always
     environment:
       - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper0.hlc.com:2888:3888 server.2=zookeeper1.hlc.com:2888:3888 server.3=zookeeper2.hlc.com:2888:3888
     ports:
       - 2181:2181
       - 2888:2888
@@ -272,7 +272,7 @@ services:
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
-      - "5984:5984"
+      - 5984:5984
     networks:
       - default
 
