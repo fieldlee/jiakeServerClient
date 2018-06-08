@@ -42,7 +42,7 @@ var query = require('./app/query.js');
 
 let host = process.env.HOST || hfc.getConfigSetting('host');
 let port = process.env.PORT || hfc.getConfigSetting('port');
-
+let netConfig = hfc.getConfigSetting('network-config');
 app.options('*', cors());
 app.use(cors());
 //support parsing of application/json type post data
@@ -95,7 +95,13 @@ function getErrorMessage(field) {
 	};
 	return response;
 }
-
+function responseJson(code,msg,data={}) {
+    return {
+        code : code,
+        msg : msg,
+        data : data
+    };
+}
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////// REST ENDPOINTS START HERE ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -411,4 +417,210 @@ app.get('/channels', function (req, res) {
 				}
 			}
 		});
+});
+
+
+app.post('/channels/query/init', function (req, res) {
+    let result = {
+        count:{peer_count:0,
+            block_count:0,
+            transaction_count:0,
+            chaincode_count:0},
+        peers:[]
+    };
+    let allThread = 4;
+    let currentCount =0;
+    try{
+        function callback() {
+            if(currentCount>=allThread){
+                res.json(responseJson(200,'ok',result));
+            }
+        }
+        function peerCount(f){
+            let j = 0;
+            for ( let k in netConfig) {
+                if(netConfig[k].peers){
+                    for (let key in netConfig[k].peers) {
+                        let peer = netConfig[k].peers[key];
+                        result.count.peer_count++;
+                        result.peers[j++] = {
+                            index : j,
+                            address : peer.requests,
+                            orgname : netConfig[k].name,
+                            mspid : netConfig[k].mspid
+                        };
+                    }
+                }
+            }
+            currentCount++;
+            f();
+        }
+        async function chainCodeCount(f){
+            let r = await query.getChainInfo(req.body.peer,req.username,req.orgname);
+            result.count.block_count = r.height.low;
+            let chaincodes = await query.getInstalledChaincodes(req.body.peer,"installed",req.username,req.orgname);
+            let tmpName = "";
+            for ( let id in chaincodes ) {
+                let strs = chaincodes[id].split(",");
+                if(tmpName.toString() !== strs[0].toString()){
+                    tmpName = strs[0].toString();
+                    result.count.chaincode_count++;
+                }
+            }
+            currentCount += 2;
+            f();
+        }
+        async function transactionCount(f){
+            let channelName = hfc.getConfigSetting('channelName');
+            let chaincodeName = "jiakechaincode";
+            let args = [];
+            let fcn = "querytxcount";
+            let peer = req.body.peer;
+            let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
+            message = message.split("now has")[1];
+            message = message.split("after the move")[0];
+            let jmsg = JSON.parse(message);
+            result.count.transaction_count = jmsg.count;
+            console.log("==========================*****************************************",jmsg);
+            currentCount++;
+            f();
+        }
+        peerCount(callback);
+        chainCodeCount(callback);
+        transactionCount(callback);
+	}
+	catch (e) {
+        res.json(responseJson(400,'初始化失败',result));
+    }
+
+});
+app.post('/channels/query/blocks', function (req, res) {
+    let pageSize = req.query.pageSize;
+    if (!pageSize) {
+        pageSize = 10;
+    }
+    if (!req.query.hight) {
+        res.json(responseJson(400,'最后高度没传'));
+    }
+    let result = [];
+    let currentCount =0;
+    function callback() {
+        if(currentCount>=pageSize){
+            res.json(responseJson(200,'ok',result));
+        }
+    }
+    async function getBlock(callback,i){
+        let ch = req.query.hight - i;
+        try{
+            let r = await query.getBlockByNumber(req.body.peer,ch,req.username,req.orgname);
+            let date = new Date(r.data.data[0].payload.header.channel_header.timestamp);
+            let time = date.getTime();//转换成秒
+            result[i] = {
+                "number" : r.header.number,
+                "previous_hash" : r.header.previous_hash,
+                "data_hash" : r.header.data_hash,
+                "tx_count" : r.data.data.length,
+                "timestamp" : time
+            };
+            currentCount++;
+            callback();
+        }
+        catch (e) {
+            console.log("========================wrong");
+            currentCount++;
+            callback();
+        }
+    }
+    for (let i=0;i<pageSize;i++){
+        getBlock(callback,i);
+    }
+});
+app.post('/channels/query/chaincode/:chaincodeName', async function (req, res) {
+    logger.debug('==================== QUERY BY CHAINCODE ==================');
+    let channelName = hfc.getConfigSetting('channelName');
+    let chaincodeName = req.params.chaincodeName;
+    let args = req.body.args;
+    let fcn = req.body.fcn;
+    let peer = req.body.peer;
+
+    if (!chaincodeName) {
+        res.json(responseJson(400,'chaincodeName 不能为空！'));
+        return;
+    }
+    if (!channelName) {
+        res.json(responseJson(400,'channelName 不能为空！'));
+        return;
+    }
+    if (!fcn) {
+        res.json(responseJson(400,'fcn 不能为空！'));
+        return;
+    }
+    if (!args) {
+        res.json(responseJson(400,'args 不能为空！'));
+        return;
+    }
+    try{
+        let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
+        message = message.split("now has")[1];
+        message = message.split("after the move")[0];
+        if (message && typeof message !== 'string') {
+            res.json(responseJson(400,"查询交易出错!",message));
+            return true;
+        }
+        let jmsg = JSON.parse(message);
+        if (jmsg && typeof jmsg !== 'string') {
+            res.json(responseJson(200,'ok',jmsg));
+            return true;
+        }
+        res.json(responseJson(400,"查询交易出错!"));
+        return true;
+    }
+    catch (e) {
+        res.json(responseJson(400,'查询交易出错',e));
+    }
+
+});
+app.post('/channels/query/block/:blockId', function (req, res) {
+    let blockId = req.params.blockId;
+    if (!blockId) {
+        res.json(responseJson(400,'区块id错误'));
+    }
+    let result = [];
+    async function getBlock(){
+        try{
+            let r = await query.getBlockByNumber(req.body.peer,blockId,req.username,req.orgname);
+            let jj = 0;
+            for (let j=0;j<r.data.data.length;j++){
+                let date = new Date(r.data.data[j].payload.header.channel_header.timestamp);
+                let time = date.getTime(),tx_id='',number='';//转换成秒
+                console.log("========================data===================",blockId);
+                let rwWrites = r.data.data[j].payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset;
+                let writes = [];
+                for(let kk=0;kk<rwWrites.length;kk++){
+                    if(rwWrites[kk].rwset.writes.length>0){
+                        writes = rwWrites[kk].rwset.writes;
+                    }
+                }
+                for(let k=0;k<writes.length;k++){
+                    if(writes[k].key.indexOf("PRODUCT_INFO") !== -1){
+                        let value = JSON.parse(writes[k].value);
+                        number = value.productId;
+                        tx_id = value.txId;
+                        time = value.createTime;
+                        result[jj++] = {
+                            "tx_id" : tx_id,
+                            "number" : number,
+                            "timestamp" : time
+                        };
+                    }
+                }
+            }
+            res.json(responseJson(200,'ok',result));
+        }
+        catch (e) {
+            console.log("========================wrong==========================",e);
+            res.json(responseJson(404,'未发现相关区块',result));
+        }
+    }
+    getBlock();
 });

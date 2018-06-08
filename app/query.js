@@ -42,6 +42,7 @@ var queryChaincode = function(peer, channelName, chaincodeName, args, fcn, usern
 		return 'Failed to get submitter \''+username+'\'. Error: ' + err.stack ? err.stack :
 			err;
 	}).then((response_payloads) => {
+		console.log(response_payloads,"***********************************************");
 		if (response_payloads) {
 			console.log("response_payloads======================================");
 			for (let i = 0; i < response_payloads.length; i++) {
