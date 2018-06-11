@@ -568,6 +568,12 @@ app.post('/channels/query/chaincode/:chaincodeName', async function (req, res) {
             return true;
         }
         let jmsg = JSON.parse(message);
+        if(fcn.toString()==="querytransfer"){
+            for (let i=0;i<jmsg.length;i++){
+                jmsg[i]["operateTime"] = jmsg[i]["operateTime"] * 1000;
+			}
+		}
+
         if (jmsg && typeof jmsg !== 'string') {
             res.json(responseJson(200,'ok',jmsg));
             return true;
@@ -613,6 +619,52 @@ app.post('/channels/query/block/:blockId', function (req, res) {
                             "timestamp" : time
                         };
                     }
+                }
+            }
+            res.json(responseJson(200,'ok',result));
+        }
+        catch (e) {
+            console.log("========================wrong==========================",e);
+            res.json(responseJson(404,'未发现相关区块',result));
+        }
+    }
+    getBlock();
+});
+app.post('/channels/query/transaction/:txid', function (req, res) {
+    let txid = req.params.txid;
+    if (!txid) {
+        res.json(responseJson(400,'交易编号错误'));
+    }
+    let result = [];
+    async function getBlock(){
+        try{
+            let r = await query.getTransactionByID(req.body.peer,txid,req.username,req.orgname);
+
+            if(r.validationCode!==0){
+                res.json(responseJson(400,'未发现数据'));
+			}
+            let jj = 0;
+            let date = new Date(r.transactionEnvelope.payload.header.channel_header.timestamp);
+            let time = date.getTime(),tx_id='',number='';//转换成秒
+            console.log("========================data===================",txid);
+            let rwWrites = r.transactionEnvelope.payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset;
+            let writes = [];
+            for(let kk=0;kk<rwWrites.length;kk++){
+                if(rwWrites[kk].rwset.writes.length>0){
+                    writes = rwWrites[kk].rwset.writes;
+                }
+            }
+            for(let k=0;k<writes.length;k++){
+                if(writes[k].key.indexOf("PRODUCT_INFO") !== -1){
+                    let value = JSON.parse(writes[k].value);
+                    number = value.productId;
+                    tx_id = value.txId;
+                    time = value.createTime;
+                    result[jj++] = {
+                        "tx_id" : tx_id,
+                        "number" : number,
+                        "timestamp" : time
+                    };
                 }
             }
             res.json(responseJson(200,'ok',result));
