@@ -43,7 +43,6 @@ var queryChaincode = function(peer, channelName, chaincodeName, args, fcn, usern
 			err;
 	}).then((response_payloads) => {
 		if (response_payloads) {
-			console.log("response_payloads======================================");
 			for (let i = 0; i < response_payloads.length; i++) {
 				console.log(response_payloads[i].toString('utf8'));
 			}
