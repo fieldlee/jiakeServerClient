@@ -2,7 +2,7 @@
 #
 # Copyright IBM Corp. All Rights Reserved.
 #
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache-2.1
 #
 
 jq --version > /dev/null 2>&1
@@ -72,7 +72,7 @@ curl -s -X POST \
 	"peers": ["peer1", "peer2"],
 	"chaincodeName":"jiakechaincode",
 	"chaincodePath":"jiakechaincode",
-	"chaincodeVersion":"v1.4"
+	"chaincodeVersion":"v2.9"
 }'
 echo
 echo
@@ -88,7 +88,7 @@ curl -s -X POST \
 	"peers": ["peer1","peer2"],
 	"chaincodeName":"jiakechaincode",
 	"chaincodePath":"jiakechaincode",
-	"chaincodeVersion":"v1.4"
+	"chaincodeVersion":"v2.9"
 }'
 echo
 echo
@@ -103,7 +103,7 @@ curl -s -X POST \
 	"peers": ["peer1","peer2"],
 	"chaincodeName":"jiakechaincode",
 	"chaincodePath":"jiakechaincode",
-	"chaincodeVersion":"v1.4"
+	"chaincodeVersion":"v2.9"
 }'
 echo
 echo
@@ -119,7 +119,7 @@ curl -s -X POST \
 	"peers": ["peer1","peer2"],
 	"chaincodeName":"jiakechaincode",
 	"chaincodePath":"jiakechaincode",
-	"chaincodeVersion":"v1.4"
+	"chaincodeVersion":"v2.9"
 }'
 echo
 echo
@@ -132,7 +132,7 @@ curl -s -X PUT \
   -H "content-type: application/json" \
   -d '{
 	"chaincodeName":"jiakechaincode",
-	"chaincodeVersion":"v1.4",
+	"chaincodeVersion":"v2.9",
   "args":[]
 }'
 echo
