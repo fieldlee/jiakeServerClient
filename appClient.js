@@ -595,31 +595,11 @@ app.post('/channels/query/block/:blockId', function (req, res) {
     async function getBlock(){
         try{
             let r = await query.getBlockByNumber(req.body.peer,blockId,req.username,req.orgname);
-            let jj = 0;
             for (let j=0;j<r.data.data.length;j++){
-                let date = new Date(r.data.data[j].payload.header.channel_header.timestamp);
-                let time = date.getTime(),tx_id='',number='';//转换成秒
                 console.log("========================data===================",blockId);
                 let rwWrites = r.data.data[j].payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset;
-                let writes = [];
-                for(let kk=0;kk<rwWrites.length;kk++){
-                    if(rwWrites[kk].rwset.writes.length>0){
-                        writes = rwWrites[kk].rwset.writes;
-                    }
-                }
-                for(let k=0;k<writes.length;k++){
-                    if(writes[k].key.indexOf("PRODUCT_INFO") !== -1){
-                        let value = JSON.parse(writes[k].value);
-                        number = value.productId;
-                        tx_id = value.txId;
-                        time = value.createTime;
-                        result[jj++] = {
-                            "tx_id" : tx_id,
-                            "number" : number,
-                            "timestamp" : time
-                        };
-                    }
-                }
+                result.push.apply(result,getBlockTransData(rwWrites));
+                console.log("***********************",result,"******************");
             }
             res.json(responseJson(200,'ok',result));
         }
@@ -643,31 +623,9 @@ app.post('/channels/query/transaction/:txid', function (req, res) {
             if(r.validationCode!==0){
                 res.json(responseJson(400,'未发现数据'));
 			}
-            let jj = 0;
-            let date = new Date(r.transactionEnvelope.payload.header.channel_header.timestamp);
-            let time = date.getTime(),tx_id='',number='';//转换成秒
             console.log("========================data===================",txid);
             let rwWrites = r.transactionEnvelope.payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset;
-            let writes = [];
-            for(let kk=0;kk<rwWrites.length;kk++){
-                if(rwWrites[kk].rwset.writes.length>0){
-                    writes = rwWrites[kk].rwset.writes;
-                }
-            }
-            for(let k=0;k<writes.length;k++){
-                if(writes[k].key.indexOf("PRODUCT_INFO") !== -1){
-                    let value = JSON.parse(writes[k].value);
-                    number = value.productId;
-                    tx_id = value.txId;
-                    time = value.createTime;
-                    result[jj++] = {
-                        "tx_id" : tx_id,
-                        "number" : number,
-                        "timestamp" : time
-                    };
-                }
-            }
-            res.json(responseJson(200,'ok',result));
+            res.json(responseJson(200,'ok',getBlockTransData(rwWrites)));
         }
         catch (e) {
             console.log("========================wrong==========================",e);
@@ -676,3 +634,48 @@ app.post('/channels/query/transaction/:txid', function (req, res) {
     }
     getBlock();
 });
+
+
+function getBlockTransData(rwWrites){
+    let result = [];
+    let writes = [];
+    let jj = 0;
+    for(let kk=0;kk<rwWrites.length;kk++){
+        if(rwWrites[kk].rwset.writes.length>0){
+            writes = rwWrites[kk].rwset.writes;
+        }
+    }
+    for(let k=0;k<writes.length;k++){
+    	//兼容老版数据取法
+        if(writes[k].key.length === 64){
+        	if(!value.after){
+        		continue;
+			}
+            let value = JSON.parse(writes[k].value);
+            let number = value.after.productId;
+            let tx_id = writes[k].key;
+            //老版时间是字符串改为秒
+            let date = new Date(value.after.createTime);
+            let time = date.getTime();//转换成秒
+            result[jj++] = {
+                "tx_id" : tx_id,
+                "number" : number,
+                "timestamp" : time
+            };
+        }
+    	//升级版数据取法 统一取PRODUCT_INFO
+        else if(writes[k].key.indexOf("PRODUCT_INFO") !== -1){
+            let value = JSON.parse(writes[k].value);
+            let number = value.productId;
+            let tx_id = value.txId;
+            let time = value.createTime;
+            result[jj++] = {
+                "tx_id" : tx_id,
+                "number" : number,
+                "timestamp" : time
+            };
+        }
+
+    }
+    return result;
+}
