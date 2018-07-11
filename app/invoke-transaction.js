@@ -103,7 +103,7 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 					let handle = setTimeout(() => {
 						eh.disconnect();
 						reject();
-					}, 30000);
+					}, 50000);
 
 					eh.registerTxEvent(transactionID, (tx, code) => {
 						clearTimeout(handle);
@@ -132,19 +132,18 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 				logger.error(
 					'Failed to send transaction and get notifications within the timeout period.'
 				);
-				return 'Failed to send transaction and get notifications within the timeout period.';
+				return '{\"err:\":\"Failed to send transaction and get notifications within the timeout period.\"}';
 			});
 		} else {
 			logger.error(
 				'Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...'
 			);
-			return 'Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...';
+			return '{\"err:\":\"Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...\"';
 		}
 	}, (err) => {
 		logger.error('Failed to send proposal due to error: ' + err.stack ? err.stack :
 			err);
-		return 'Failed to send proposal due to error: ' + err.stack ? err.stack :
-			err;
+		return '{\"err:\":\"Failed to send proposal due to error: ' + err.stack ? err.stack :err +'\"}';
 	}).then((response) => {
 		if (response.status === 'SUCCESS') {
 			logger.info(response);
@@ -156,13 +155,12 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 			return response;
 		} else {
 			logger.error('Failed to order the transaction. Error code: ' + response.status);
-			return 'Failed to order the transaction. Error code: ' + response.status;
+			return '{\"err:\":\"Failed to order the transaction. Error code: ' + response.status + '\"}';
 		}
 	}, (err) => {
 		logger.error('Failed to send transaction due to error: ' + err.stack ? err
 			.stack : err);
-		return 'Failed to send transaction due to error: ' + err.stack ? err.stack :
-			err;
+		return '{\"err:\":\"Failed to send transaction due to error: ' + err.stack ? err.stack :err +'\"}';
 	});
 };
 
