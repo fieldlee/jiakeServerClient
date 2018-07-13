@@ -513,13 +513,18 @@ app.post('/channels/query/blocks', function (req, res) {
         let ch = req.query.hight - i;
         try{
             let r = await query.getBlockByNumber(req.body.peer,ch,req.username,req.orgname);
+            let tx_count = 0;
+            for (let j=0;j<r.data.data.length;j++){
+                let rwWrites = r.data.data[j].payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset;
+                tx_count += getBlockTransData(rwWrites).length;
+            }
             let date = new Date(r.data.data[0].payload.header.channel_header.timestamp);
             let time = date.getTime();//转换成秒
             result[i] = {
                 "number" : r.header.number,
                 "previous_hash" : r.header.previous_hash,
                 "data_hash" : r.header.data_hash,
-                "tx_count" : r.data.data.length,
+                "tx_count" : tx_count,
                 "timestamp" : time
             };
             currentCount++;
