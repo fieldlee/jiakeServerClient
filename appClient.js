@@ -570,7 +570,7 @@ app.post('/channels/query/chaincode/:chaincodeName', async function (req, res) {
         let jmsg = JSON.parse(message);
         if(fcn.toString()==="querytransfer"){
             for (let i=0;i<jmsg.length;i++){
-                jmsg[i]["operateTime"] = jmsg[i]["operateTime"] * 1000;
+                jmsg[i]["operateTime"] = jmsg[i]["operateTime"];
 			}
 		}
 
