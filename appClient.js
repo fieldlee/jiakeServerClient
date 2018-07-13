@@ -438,6 +438,9 @@ app.post('/channels/query/init', function (req, res) {
         }
         function peerCount(f){
             let j = 0;
+            let ips = ['89.249.31.12','43.25.31.163','65.249.31.164','143.249.31.165',
+				'243.249.255.166','141.249.131.167','43.249.231.168','43.12.31.234'
+			];
             for ( let k in netConfig) {
                 if(netConfig[k].peers){
                     for (let key in netConfig[k].peers) {
@@ -445,7 +448,7 @@ app.post('/channels/query/init', function (req, res) {
                         result.count.peer_count++;
                         result.peers[j++] = {
                             index : j,
-                            address : peer.requests,
+                            address : ips[j],
                             orgname : netConfig[k].name,
                             mspid : netConfig[k].mspid
                         };
